@@ -87,7 +87,9 @@ def add_metrics(t: pd.DataFrame) -> pd.DataFrame:
     t["automation_share"] = auto / classified.where(classified > 0)
     t["augmentation_share"] = aug / classified.where(classified > 0)
 
-    t["speedup"] = t["human_only_time"] / t["human_with_ai_time"].where(t["human_with_ai_time"] > 0)
+        # Units differ: human_only_time is in HOURS, human_with_ai_time is in MINUTES
+    # (global means 3.09 h vs 15.35 min on Claude.ai), so convert hours to minutes first.
+    t["speedup"] = (t["human_only_time"] * 60) / t["human_with_ai_time"].where(t["human_with_ai_time"] > 0)
     return t
 
 

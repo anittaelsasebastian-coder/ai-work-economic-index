@@ -1,0 +1,13 @@
+check_name,source,expected,actual,difference,result
+Usage shares sum to 1 on each platform,internal,2.0,2.0,0.0,PASS
+Occupation split keeps every record,internal,1792680.0,1792680.0,0.0,PASS
+Q2 total equals joined total (Claude.ai),internal,935027.0,935027.0,0.0,PASS
+"Top-10 task share, Claude.ai",Anthropic: 24%,0.24,0.2425,0.0025,PASS
+"Top-10 task share, API",Anthropic: 32%,0.32,0.3214,0.0014,PASS
+"Top task share (fix software errors), Claude.ai",Anthropic: 6%,0.06,0.0597,0.0003,PASS
+"Computer and Mathematical share, Claude.ai",Anthropic: 36%,0.36,0.3606,0.0006,PASS
+"Computer and Mathematical share, API",Anthropic: 52%,0.52,0.5183,0.0017,PASS
+"Overall success rate, Claude.ai",Anthropic: 67%,0.67,0.6761,0.0061,PASS
+"Overall success rate, API",Anthropic: 49%,0.49,0.4786,0.0114,PASS
+Q3 duplicate tasks,internal,0.0,0.0,0.0,PASS
+Q3 rows breaking the eligibility rules,internal,0.0,0.0,0.0,PASS

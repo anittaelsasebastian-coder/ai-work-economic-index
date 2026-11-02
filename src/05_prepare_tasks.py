@@ -61,6 +61,7 @@ def build(df: pd.DataFrame) -> pd.DataFrame:
 
     table = table.join(counts_by_category(df, "onet_task::task_success", "success"))
     table = table.join(counts_by_category(df, "onet_task::collaboration", "collab"))
+    table = table.join(counts_by_category(df, "onet_task::use_case", "use"))
     table = table.join(task_mean(df, "onet_task::human_only_time", "human_only_time"))
     table = table.join(task_mean(df, "onet_task::human_with_ai_time", "human_with_ai_time"))
     table = table.join(task_mean(df, "onet_task::ai_autonomy", "ai_autonomy"))
@@ -90,6 +91,15 @@ def add_metrics(t: pd.DataFrame) -> pd.DataFrame:
         # Units differ: human_only_time is in HOURS, human_with_ai_time is in MINUTES
     # (global means 3.09 h vs 15.35 min on Claude.ai), so convert hours to minutes first.
     t["speedup"] = (t["human_only_time"] * 60) / t["human_with_ai_time"].where(t["human_with_ai_time"] > 0)
+    # Use case: share of conversations that are work (vs coursework / personal).
+    # not_classified is excluded from the denominator, as for success rate.
+    use_cols = [c for c in t.columns if c.startswith("use_") and c != "use_not_classified"]
+    t[use_cols] = t[use_cols].fillna(0)
+    print(f"Use-case columns found: {use_cols}")
+    if "use_work" not in t.columns:
+        raise SystemExit("No 'use_work' column: check the category names printed above.")
+    used = t[use_cols].sum(axis=1)
+    t["work_share"] = t["use_work"] / used.where(used > 0)
     return t
 
 
